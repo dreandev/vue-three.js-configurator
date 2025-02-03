@@ -66,17 +66,5 @@
     height: 100vh;
     background: black;
   }
-  
-  .editor-container {
-    width: 35vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding: 20px;
-    overflow-y: auto;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-  }
   </style>
   

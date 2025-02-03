@@ -69,17 +69,17 @@ export default {
       this.ambientLight = new THREE.AmbientLight(0xff00ac, 1);
       this.scene.add(this.ambientLight);
 
-      this.directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-      this.directionalLight.position.set(-70, 60, 0);
-      this.directionalLight.castShadow = true;
-      this.scene.add(this.directionalLight);
+      // this.directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+      // this.directionalLight.position.set(-70, 60, 0);
+      // this.directionalLight.castShadow = true;
+      // this.scene.add(this.directionalLight);
 
-      if (this.directionalLight) {
-        this.dLightHelper = new THREE.DirectionalLightHelper(this.directionalLight, 5);
-        this.scene.add(this.dLightHelper);
-      } else {
-        console.warn("La luz direccional no está definida al crear el helper");
-      }
+      // if (this.directionalLight) {
+      //   this.dLightHelper = new THREE.DirectionalLightHelper(this.directionalLight, 5);
+      //   this.scene.add(this.dLightHelper);
+      // } else {
+      //   console.warn("La luz direccional no está definida al crear el helper");
+      // }
 
       this.animate();
     },
@@ -123,6 +123,7 @@ export default {
     },
     setAmbientLightIntensity(intensity) {
       if (this.ambientLight) {
+        console.log("Cambiando intensidad de luz ambiental:", intensity);
         this.ambientLight.intensity = intensity;
       }
     },
@@ -148,15 +149,19 @@ export default {
       }
     },
     sliderDirectionalLight(enabled) {
-      if (this.directionalLight) {
-        if (enabled) {
-          console.log("Activando luz direccional");
-          if (!this.scene.children.includes(this.directionalLight)) {
-            this.scene.add(this.directionalLight);
-          }
-        } else {
-          console.log("Desactivando luz direccional");
-          this.scene.remove(this.directionalLight);
+      if (enabled) {
+        console.log("Activando luz direccinal");
+        if (!this.scene.children.includes(this.directionalLight)) {
+          this.scene.add(this.directionalLight);
+          this.dLightHelper = new THREE.DirectionalLightHelper(this.directionalLight, 5);
+          this.scene.add(this.dLightHelper);
+        }
+      } else {
+        console.log("Desactivando luz direccional.");
+        this.scene.remove(this.dLightHelper);
+        if(this.dLightHelper) {
+          this.scene.remove(this.dLightHelper)
+          this.dLightHelper = null;
         }
       }
     },
