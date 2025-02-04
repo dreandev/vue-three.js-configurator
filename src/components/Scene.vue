@@ -150,25 +150,31 @@ export default {
     },
     sliderDirectionalLight(enabled) {
       if (enabled) {
-        console.log("Activando luz direccinal");
-        if (!this.scene.children.includes(this.directionalLight)) {
-          this.scene.add(this.directionalLight);
+        if (!this.directionalLight) {
+          this.directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+          this.directionalLight.position.set(-70, 60, 0);
+          this.directionalLight.castShadow = true;
+        }
+        this.scene.add(this.directionalLight);
+
+        if(!this.dLightHelper) {
           this.dLightHelper = new THREE.DirectionalLightHelper(this.directionalLight, 5);
           this.scene.add(this.dLightHelper);
         }
       } else {
-        console.log("Desactivando luz direccional.");
-        this.scene.remove(this.dLightHelper);
-        if(this.dLightHelper) {
+        if (this.directionalLight) {
+          this.scene.remove(this.directionalLight);
+        } if(this.dLightHelper) {
           this.scene.remove(this.dLightHelper)
-          this.dLightHelper = null;
+          this.dLightHelper = null;  
         }
+        this.directionalLight = null;
       }
     },
     setDirectionalLightPosition(x, y, z) {
       if (this.directionalLight) {
         this.directionalLight.position.set(x, y, z);
-        this.dLightHelper.update(); // Asegúrate de actualizar el helper
+        this.dLightHelper.update();
       }
     },
   },

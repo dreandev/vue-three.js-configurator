@@ -3,11 +3,11 @@
       <div class="slider-track">
         <div
           class="slider-progress"
-          :style="{ width: `${(currentValue - min) / (max - min) * 100}%` }"
+          :style="{ width: `${(value - min) / (max - min) * 100}%` }"
         ></div>
         <div
           class="slider-thumb"
-          :style="{ left: `${(currentValue - min) / (max - min) * 100}%` }"
+          :style="{ left: `${(value - min) / (max - min) * 100}%` }"
           @mousedown="startDragging"
           @touchstart="startDragging"
         ></div>
@@ -31,17 +31,15 @@
         type: Number,
         default: 100,
       },
+      step: {
+        type: Number,
+        default: 1,
+      }
     },
     data() {
       return {
-        currentValue: this.value,
         isDragging: false,
       };
-    },
-    watch: {
-      value(newValue) {
-        this.currentValue = newValue;
-      },
     },
     methods: {
       startDragging(event) {
@@ -64,6 +62,7 @@
         document.removeEventListener("touchend", this.stopDragging);
       },
       handleClick(event) {
+        if(this.isDragging) return;
         this.updateValueFromEvent(event);
       },
       updateValueFromEvent(event) {
@@ -73,8 +72,9 @@
   
         let newValue = ((clientX - trackRect.left) / trackRect.width) * (this.max - this.min) + this.min;
         newValue = Math.max(this.min, Math.min(this.max, newValue));
-        this.currentValue = newValue;
-        this.$emit("input", Math.round(newValue * 10) / 10);
+        newValue = Math.round(newValue / this.step) * this.step;
+        newValue = parseFloat(newValue.toFixed(2));
+        this.$emit("input", newValue);
       },
     },
   };
@@ -106,13 +106,13 @@
   .slider-thumb {
     position: absolute;
     top: 50%;
-    width: 12px;
-    height: 12px;
+    width: 8px;
+    height: 8px;
     background: #000;
     border: 2px solid #666;
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    transition: background-color 0.2s ease;
+    transition: left 0.1s ease-out, background-color 0.2s ease;
   }
   
   .slider-thumb:hover {

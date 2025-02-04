@@ -1,35 +1,34 @@
+import Caracteristica from "./Caracteristica";
+
 export default class Aplication {
-    constructor() {
-        this.languageSel = 'es';
-        this.languages = ['es', 'en'];
-        this.modeloSel = 'cat';
-        this.modelos = [
-            { cod: 'cat', name: 'Gato' },
-            { cod: 'duck', name: 'Pato' },
-        ]
-    }
+  constructor() {
+    this.campos = [];
+    this.visualizer = false;
+  }
 
-    getLanguageSel() {
-        return this.languageSel;
+  addCampo(campo) {
+    if (!(campo instanceof Campo)) {
+      console.error("El elemento añadido no es una instancia de Campo.");
+      return;
     }
-    setLanguageSel(lan) {
-        if(this.languages.includes(lang)) {
-            this.languageSel = lang;
-        } else {
-            console.warn(`El idioma ${lang} no está en la lista de idiomas soportados :(`)
-        }
-    }
+    this.campo.push(campo);
+  }
 
-    getModeloSel() {
-        return this.modeloSel;
-    }
-    setModeloSel(modelo) {
-        const existe = this.modelos.find((m) => m.cod === modelo);
-        if(existe) {
-            this.modeloSel = modelo;
-        } else {
-            console.warn(`El modelo ${modelo} no está disponible en la lista de modelos.`);
-        }
-    }
-    
+  getCampo(cod) {
+    return this.campos.find(campo => campo.cod === cod);
+  }
+
+  setValor(campoCod, caracteristicaCod) {
+    const campo = this.getCampo(campoCod);
+    return campo ? campo.getValor(caracteristicaCod) : null;
+  }
+
+  setVisualizer(estado) {
+    this.visualizer = estado;
+  }
+
+  describe() {
+    console.log("Aplicación:");
+    this.campos.forEach(campo => campo.describe());
+  }
 }
